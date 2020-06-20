@@ -1,9 +1,7 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { hash } from 'bcryptjs';
 
 import IUser from './interfaces/IUser';
-
-type UserSchemaProps = IUser & Document;
 
 const UserSchema = new Schema({
 	username: String,
@@ -12,7 +10,7 @@ const UserSchema = new Schema({
 	defaultDestination: String,
 });
 
-UserSchema.pre<UserSchemaProps>('save', async function (next) {
+UserSchema.pre<IUser>('save', async function (next) {
 	if (!this.isModified('password')) return next();
 
 	const hashedPassword = await hash(this.password, 8);
