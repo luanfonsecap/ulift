@@ -1,12 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { hash } from 'bcryptjs';
 
-interface UserSchemaProps extends Document {
-	username: string;
-	email: string;
-	password: string;
-	defaultDestination: string;
-}
+import IUser from './interfaces/IUser';
+
+type UserSchemaProps = IUser & Document;
 
 const UserSchema = new Schema({
 	username: String,
