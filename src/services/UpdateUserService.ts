@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
-import { hash, compare } from 'bcryptjs';
 
+import HashProvider from '../providers/implementations/HashProvider';
 import UserRepository from '../repositories/UserRepostiroy';
 import IUpdateUserDTO from '../repositories/dtos/IUpdateUser';
 import User from '../schemas/User';
@@ -18,6 +18,7 @@ class UpdateUserService {
 		}: IUpdateUserDTO,
 	): Promise<Document> {
 		const userRepository = new UserRepository();
+		const hashProvider = new HashProvider();
 
 		const user = await userRepository.findById(id);
 
@@ -36,13 +37,16 @@ class UpdateUserService {
 		}
 
 		if (password && oldPassword) {
-			const checkOldPassword = await compare(oldPassword, user.password);
+			const checkOldPassword = await hashProvider.compareHash(
+				oldPassword,
+				user.password,
+			);
 
 			if (!checkOldPassword) {
 				throw new AppError('Old password does not match.', 401);
 			}
 
-			user.password = await hash(password, 8);
+			user.password = await hashProvider.generateHash(password);
 		}
 
 		user.email = email;

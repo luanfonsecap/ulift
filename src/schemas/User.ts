@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
-import { hash } from 'bcryptjs';
 
+import HashProvider from '../providers/implementations/HashProvider';
 import IUser from './interfaces/IUser';
 
 const UserSchema = new Schema({
@@ -13,7 +13,9 @@ const UserSchema = new Schema({
 UserSchema.pre<IUser>('save', async function (next) {
 	if (!this.isModified('password')) return next();
 
-	const hashedPassword = await hash(this.password, 8);
+	const hashProvider = new HashProvider();
+
+	const hashedPassword = await hashProvider.generateHash(this.password);
 
 	this.password = hashedPassword;
 	return next();
