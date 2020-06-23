@@ -19,6 +19,7 @@
 		"prettier/prettier": "error",
 		"func-names": "off",
 		"class-methods-use-this": "off",
+		"no-underscore-dangle": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{ "argsIgnorePattern": "_" }

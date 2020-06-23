@@ -2,11 +2,14 @@ import { Request, Response } from 'express';
 import * as Yup from 'yup';
 
 import CreateUserService from '../services/CreateUserService';
+import AppError from '../errors/AppError';
 import YupValidationError from '../errors/YupValidationError';
 
 class UsersController {
 	async store(req: Request, res: Response): Promise<Response> {
 		const { username, email, password, defaultDestination } = req.body;
+
+		const createUserService = new CreateUserService();
 
 		const schema = Yup.object().shape({
 			username: Yup.string().required('Username is required'),
@@ -24,8 +27,6 @@ class UsersController {
 			throw new YupValidationError(error.message);
 		}
 
-		const createUserService = new CreateUserService();
-
 		const user = await createUserService.execute({
 			username,
 			email,
@@ -34,6 +35,56 @@ class UsersController {
 		});
 
 		return res.json(user);
+	}
+
+	async update(req: Request, res: Response): Promise<Response> {
+		const {
+			username,
+			email,
+			password,
+			oldPassword,
+			defaultDestination,
+			confirmPassword,
+		} = req.body;
+		const { id } = req.params;
+
+		if (!id) {
+			throw new AppError('No Id has provided');
+		}
+
+		const schema = Yup.object().shape({
+			username: Yup.string().required('Username is required'),
+			email: Yup.string()
+				.email('Inser a valid e-mail')
+				.required('E-mail is required'),
+			password: Yup.string().min(
+				6,
+				'The password must be at least six characters long',
+			),
+			confirmPassword: Yup.string().when('password', {
+				is: true,
+				then: Yup.string()
+					.required('Confirm password is required')
+					.equals([Yup.ref('password')], 'New password does not match'),
+			}),
+			oldPassword: Yup.string().when('password', {
+				is: true,
+				then: Yup.string().required('Current password is required'),
+			}),
+		});
+
+		try {
+			await schema.validate({
+				username,
+				email,
+				password,
+				oldPassword,
+				defaultDestination,
+				confirmPassword,
+			});
+		} catch (error) {
+			throw new YupValidationError(error.message);
+		}
 	}
 }
 

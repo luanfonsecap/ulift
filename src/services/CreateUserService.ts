@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+
 import UserRepository from '../repositories/UserRepostiroy';
 import UserDTO from '../repositories/interfaces/dtos/ICreateUserDTO';
 
