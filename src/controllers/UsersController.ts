@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as Yup from 'yup';
 
 import CreateUserService from '../services/CreateUserService';
+import UpdateUserService from '../services/UpdateUserService';
 import AppError from '../errors/AppError';
 import YupValidationError from '../errors/YupValidationError';
 
@@ -47,6 +48,7 @@ class UsersController {
 			confirmPassword,
 		} = req.body;
 		const { id } = req.params;
+		const updateUserService = new UpdateUserService();
 
 		if (!id) {
 			throw new AppError('No Id has provided');
@@ -85,6 +87,16 @@ class UsersController {
 		} catch (error) {
 			throw new YupValidationError(error.message);
 		}
+
+		const updatedUser = await updateUserService.execute(id, {
+			username,
+			email,
+			password,
+			oldPassword,
+			defaultDestination,
+		});
+
+		return res.json(updatedUser);
 	}
 }
 
