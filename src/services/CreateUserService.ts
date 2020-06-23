@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
-import UserRepository from '../repositories/UserRepostiroy';
-import UserDTO from '../repositories/interfaces/dtos/ICreateUserDTO';
+import UserRepository from '../repositories/implementations/UserRepostiroy';
+import UserDTO from '../repositories/dtos/ICreateUserDTO';
 
 class CreateUserService {
 	public async execute({

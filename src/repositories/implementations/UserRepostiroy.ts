@@ -1,8 +1,8 @@
-import IUserRepositories from './interfaces/IUserRepository';
-import ICreateUserDTO from './dtos/ICreateUserDTO';
-import User from '../schemas/User';
-import IUser from '../schemas/interfaces/IUser';
-import AppError from '../errors/AppError';
+import IUserRepositories from '../interfaces/IUserRepository';
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
+import User from '../../schemas/User';
+import IUser from '../../schemas/interfaces/IUser';
+import AppError from '../../errors/AppError';
 
 class UserRepository implements IUserRepositories {
 	public async create({

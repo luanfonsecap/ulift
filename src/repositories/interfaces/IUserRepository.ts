@@ -1,4 +1,4 @@
-import ICreateUserDTO from './dtos/ICreateUserDTO';
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
 import IUser from '../../schemas/interfaces/IUser';
 
 export default interface IUserRepository {
