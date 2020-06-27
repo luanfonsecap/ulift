@@ -29,6 +29,7 @@ UserSchema.pre<IUser>('save', async function (next) {
 UserSchema.set('toJSON', {
 	transform(_doc, ret, _options) {
 		return {
+			_id: ret._id,
 			username: ret.username,
 			email: ret.email,
 			defaultDestination: ret.defaultDestination,
