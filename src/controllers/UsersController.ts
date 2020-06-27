@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 
 import CreateUserService from '../services/CreateUserService';
 import UpdateUserService from '../services/UpdateUserService';
+import DeleteUserService from '../services/DeleteUserService';
 import AppError from '../errors/AppError';
 import YupValidationError from '../errors/YupValidationError';
 
@@ -97,6 +98,16 @@ class UsersController {
 		});
 
 		return res.json(updatedUser);
+	}
+
+	async delete(req: Request, res: Response): Promise<Response> {
+		const { id } = req.params;
+
+		const deleteUserService = new DeleteUserService();
+
+		await deleteUserService.execute(id);
+
+		return res.status(204).send();
 	}
 }
 
