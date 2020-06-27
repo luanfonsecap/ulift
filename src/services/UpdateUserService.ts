@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 import HashProvider from '../providers/implementations/HashProvider';
-import UserRepository from '../repositories/UserRepostiroy';
+import UserRepository from '../repositories/implementations/UserRepostiroy';
 import IUpdateUserDTO from '../repositories/dtos/IUpdateUser';
 import User from '../schemas/User';
 import AppError from '../errors/AppError';
