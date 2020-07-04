@@ -7,7 +7,7 @@ let fakeUserRepository: FakeUserRepository;
 describe('Create User Service', () => {
 	beforeEach(() => {
 		fakeUserRepository = new FakeUserRepository();
-		createUserService = new CreateUserService();
+		createUserService = new CreateUserService(fakeUserRepository);
 	});
 
 	it('should be able to create a new user', async () => {
@@ -17,8 +17,7 @@ describe('Create User Service', () => {
 			password: '123123',
 			defaultDestination: 'Una Betim',
 		});
-		console.log('a');
 
-		expect(user).toHaveProperty('_id');
+		expect(user).toHaveProperty('id');
 	});
 });

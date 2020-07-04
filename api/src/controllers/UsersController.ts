@@ -6,12 +6,13 @@ import UpdateUserService from '../services/UpdateUserService';
 import DeleteUserService from '../services/DeleteUserService';
 import AppError from '../errors/AppError';
 import YupValidationError from '../errors/YupValidationError';
+import UserRepository from '../repositories/implementations/UserRepostiroy';
 
 class UsersController {
 	async store(req: Request, res: Response): Promise<Response> {
 		const { username, email, password, defaultDestination } = req.body;
 
-		const createUserService = new CreateUserService();
+		const createUserService = new CreateUserService(new UserRepository());
 
 		const schema = Yup.object().shape({
 			username: Yup.string().required('Username is required'),

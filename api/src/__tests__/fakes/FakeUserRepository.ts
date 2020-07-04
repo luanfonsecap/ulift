@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import { v4 as uuid } from 'uuid';
 
 import AppError from '~/errors/AppError';
 import IUserRepositories from '~/repositories/interfaces/IUserRepository';
@@ -6,14 +6,14 @@ import ICreateUserDTO from '~/repositories/dtos/ICreateUserDTO';
 import IUser from '~/schemas/interfaces/IUser';
 
 interface IFakeUser {
-	id: crypto.Hash;
+	id: string;
 	username: string;
 	email: string;
 	password: string;
 	defaultDestination: string;
 }
 
-class UserRepository {
+class UserRepository implements IUserRepositories {
 	private users: IFakeUser[] = [];
 
 	public async create({
@@ -23,7 +23,7 @@ class UserRepository {
 		defaultDestination,
 	}: ICreateUserDTO): Promise<IUser> {
 		const user = {
-			id: crypto.createHash('sha256'),
+			id: uuid(),
 			username,
 			email,
 			password,
@@ -35,31 +35,31 @@ class UserRepository {
 		return user as IUser;
 	}
 
-	// public async update(user: IUser): Promise<IUser> {
-	// 	const updatedUser = await User.findByIdAndUpdate(user._id, user);
+	public async update(user: IUser): Promise<IUser> {
+		const updatedUser = this.users.find(storedUser => storedUser === user);
 
-	// 	if (!updatedUser) {
-	// 		throw new AppError('User not found', 404);
-	// 	}
+		if (!updatedUser) {
+			throw new AppError('User not found', 404);
+		}
 
-	// 	return updatedUser;
-	// }
+		return updatedUser as IUser;
+	}
 
-	// public async delete(id: string): Promise<void> {
-	// 	await User.deleteOne({ _id: id });
-	// }
+	public async delete(id: string): Promise<void> {
+		this.users.filter(user => user.id !== id);
+	}
 
-	// public async findById(id: string): Promise<IUser | null> {
-	// 	const user = User.findById(id);
+	public async findById(id: string): Promise<IUser | null> {
+		const user = this.users.find(storedUser => storedUser.id === id);
 
-	// 	return user;
-	// }
+		return user as IUser | null;
+	}
 
-	// public async findByEmail(email: string): Promise<IUser | null> {
-	// 	const user = await User.findOne({ email });
+	public async findByEmail(email: string): Promise<IUser | null> {
+		const user = this.users.find(storedUser => storedUser.email === email);
 
-	// 	return user;
-	// }
+		return user as IUser | null;
+	}
 }
 
 export default UserRepository;
