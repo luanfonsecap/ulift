@@ -1,4 +1,3 @@
-import UserRepository from '../repositories/implementations/UserRepostiroy';
 import IUserRepository from '~/repositories/interfaces/IUserRepository';
 import AppError from '~/errors/AppError';
 
