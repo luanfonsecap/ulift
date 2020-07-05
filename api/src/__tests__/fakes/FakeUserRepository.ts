@@ -36,11 +36,13 @@ class UserRepository implements IUserRepositories {
 	}
 
 	public async update(user: IUser): Promise<IUser> {
-		const updatedUser = this.users.find(storedUser => storedUser === user);
+		const findUser = this.users.find(storedUser => storedUser === user);
 
-		if (!updatedUser) {
+		if (!findUser) {
 			throw new AppError('User not found', 404);
 		}
+
+		const updatedUser = Object.assign(user, findUser);
 
 		return updatedUser as IUser;
 	}
