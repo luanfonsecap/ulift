@@ -1,8 +1,5 @@
-import { Document } from 'mongoose';
-
 import HashProvider from '../providers/implementations/HashProvider';
 import IUpdateUserDTO from '../repositories/dtos/IUpdateUser';
-import User from '../schemas/User';
 import AppError from '../errors/AppError';
 import IUserRepository from '~/repositories/interfaces/IUserRepository';
 import IUser from '~/schemas/interfaces/IUser';
