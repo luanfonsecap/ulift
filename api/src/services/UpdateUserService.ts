@@ -31,7 +31,7 @@ class UpdateUserService {
 
 		const userWithSameEmail = await this.userRepository.findByEmail(email);
 
-		if (userWithSameEmail?.email && userWithSameEmail?.email !== email) {
+		if (userWithSameEmail && userWithSameEmail.id !== id) {
 			throw new AppError('E-mail address already in use');
 		}
 
