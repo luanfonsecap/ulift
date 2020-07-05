@@ -1,5 +1,7 @@
-import ICreateUserDTO from './ICreateUserDTO';
-
-export default interface IUpdateUserDTO extends ICreateUserDTO {
-	oldPassword: string;
+export default interface IUpdateUserDTO {
+	username: string;
+	email: string;
+	defaultDestination: string;
+	password?: string;
+	oldPassword?: string;
 }

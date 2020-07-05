@@ -1,12 +1,19 @@
 import { Document } from 'mongoose';
 
 import HashProvider from '../providers/implementations/HashProvider';
-import UserRepository from '../repositories/implementations/UserRepostiroy';
 import IUpdateUserDTO from '../repositories/dtos/IUpdateUser';
 import User from '../schemas/User';
 import AppError from '../errors/AppError';
+import IUserRepository from '~/repositories/interfaces/IUserRepository';
+import IUser from '~/schemas/interfaces/IUser';
 
 class UpdateUserService {
+	private userRepository: IUserRepository;
+
+	constructor(repository: IUserRepository) {
+		this.userRepository = repository;
+	}
+
 	public async execute(
 		id: string,
 		{
@@ -16,17 +23,16 @@ class UpdateUserService {
 			oldPassword,
 			defaultDestination,
 		}: IUpdateUserDTO,
-	): Promise<Document> {
-		const userRepository = new UserRepository();
+	): Promise<IUser> {
 		const hashProvider = new HashProvider();
 
-		const user = await userRepository.findById(id);
+		const user = await this.userRepository.findById(id);
 
 		if (!user) {
 			throw new AppError('User not found', 404);
 		}
 
-		const userWithSameEmail = await User.findOne({ email });
+		const userWithSameEmail = await this.userRepository.findByEmail(email);
 
 		if (userWithSameEmail?.email && userWithSameEmail?.email !== email) {
 			throw new AppError('E-mail address already in use');
@@ -53,7 +59,7 @@ class UpdateUserService {
 		user.defaultDestination = defaultDestination;
 		user.username = username;
 
-		await userRepository.update(user);
+		await this.userRepository.update(user);
 
 		return user;
 	}

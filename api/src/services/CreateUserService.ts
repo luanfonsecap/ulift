@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import UserDTO from '../repositories/dtos/ICreateUserDTO';
 import AppError from '../errors/AppError';
 import IUserRepository from '~/repositories/interfaces/IUserRepository';
+import IUser from '~/schemas/interfaces/IUser';
 
 class CreateUserService {
 	private userRepository: IUserRepository;
@@ -16,7 +17,7 @@ class CreateUserService {
 		password,
 		email,
 		defaultDestination,
-	}: UserDTO): Promise<Document> {
+	}: UserDTO): Promise<IUser> {
 		const userExist = await this.userRepository.findByEmail(email);
 
 		if (userExist) {
