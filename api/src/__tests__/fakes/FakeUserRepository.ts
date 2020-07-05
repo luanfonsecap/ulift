@@ -4,6 +4,7 @@ import AppError from '~/errors/AppError';
 import IUserRepositories from '~/repositories/interfaces/IUserRepository';
 import ICreateUserDTO from '~/repositories/dtos/ICreateUserDTO';
 import IUser from '~/schemas/interfaces/IUser';
+import HashProvider from '~/providers/implementations/HashProvider';
 
 interface IFakeUser {
 	id: string;
@@ -22,11 +23,13 @@ class UserRepository implements IUserRepositories {
 		password,
 		defaultDestination,
 	}: ICreateUserDTO): Promise<IUser> {
+		const hashProvider = new HashProvider();
+
 		const user = {
 			id: uuid(),
 			username,
 			email,
-			password,
+			password: await hashProvider.generateHash(password),
 			defaultDestination,
 		};
 
