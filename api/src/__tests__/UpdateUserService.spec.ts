@@ -1,4 +1,3 @@
-import { Document } from 'mongoose';
 import CreateUserService from '~/services/CreateUserService';
 import UpdateUserService from '~/services/UpdateUserService';
 import FakeUserRepository from './fakes/FakeUserRepository';
@@ -29,11 +28,30 @@ describe('Create User Service', () => {
 			defaultDestination: 'Una Betim',
 		});
 
-		expect(updatedUser.username).toEqual('username');
+		expect(updatedUser.username).toEqual('Luan Fonseca');
 	});
 
-	it("should not be able to create two user's with the same e-mail", async () => {
-		await createUserService.execute({
+	it('should be able to update a user password', async () => {
+		const user = await createUserService.execute({
+			username: 'Luan',
+			email: 'luan@email.com',
+			password: '123123',
+			defaultDestination: 'Una Betim',
+		});
+
+		const updatedUser = await updateUserService.execute(user.id, {
+			username: 'Luan',
+			email: 'luan@email.com',
+			defaultDestination: 'Una Betim',
+			oldPassword: '123123',
+			password: 'new-password',
+		});
+
+		expect(updatedUser.password).toBeTruthy();
+	});
+
+	it('should not be able to update a user password with wrong old password', async () => {
+		const user = await createUserService.execute({
 			username: 'Luan',
 			email: 'luan@email.com',
 			password: '123123',
@@ -41,10 +59,35 @@ describe('Create User Service', () => {
 		});
 
 		await expect(
-			createUserService.execute({
+			updateUserService.execute(user.id, {
 				username: 'Luan',
 				email: 'luan@email.com',
-				password: '123123',
+				defaultDestination: 'Una Betim',
+				oldPassword: 'wrong-old-password',
+				password: 'new-password',
+			}),
+		).rejects.toBeInstanceOf(AppError);
+	});
+
+	it("should not be able to update the user's email if it is already in use", async () => {
+		await createUserService.execute({
+			username: 'Luan',
+			email: 'luan@email.com',
+			password: '123123',
+			defaultDestination: 'Una Betim',
+		});
+
+		const user = await createUserService.execute({
+			username: 'Luan Fonseca',
+			email: 'luanfonseca@email.com',
+			password: '123123',
+			defaultDestination: 'Una Betim',
+		});
+
+		await expect(
+			updateUserService.execute(user.id, {
+				username: 'Luan',
+				email: 'luan@email.com',
 				defaultDestination: 'Una Betim',
 			}),
 		).rejects.toBeInstanceOf(AppError);
