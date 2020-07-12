@@ -1,9 +1,7 @@
-import { Document } from 'mongoose';
-
 import UserDTO from '../repositories/dtos/ICreateUserDTO';
 import AppError from '../errors/AppError';
-import IUserRepository from '~/repositories/interfaces/IUserRepository';
-import IUser from '~/schemas/interfaces/IUser';
+import IUserRepository from '../repositories/interfaces/IUserRepository';
+import IUser from '../schemas/interfaces/IUser';
 
 class CreateUserService {
 	private userRepository: IUserRepository;

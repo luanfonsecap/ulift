@@ -1,5 +1,5 @@
-import IUserRepository from '~/repositories/interfaces/IUserRepository';
-import AppError from '~/errors/AppError';
+import IUserRepository from '../repositories/interfaces/IUserRepository';
+import AppError from '../errors/AppError';
 
 class DeleteUserService {
 	private userRepository: IUserRepository;

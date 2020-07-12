@@ -1,8 +1,8 @@
 import HashProvider from '../providers/implementations/HashProvider';
 import IUpdateUserDTO from '../repositories/dtos/IUpdateUser';
 import AppError from '../errors/AppError';
-import IUserRepository from '~/repositories/interfaces/IUserRepository';
-import IUser from '~/schemas/interfaces/IUser';
+import IUserRepository from '../repositories/interfaces/IUserRepository';
+import IUser from '../schemas/interfaces/IUser';
 
 class UpdateUserService {
 	private userRepository: IUserRepository;
