@@ -8,9 +8,13 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
-  body {
-    background: #f1f2f6;
+  html, body, #root {
+    height: 100vh;
     color: #2f3542;
+  }
+
+  body {
+    background: #fff;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -21,6 +25,7 @@ export default createGlobalStyle`
 
   h1, h2, h3, h4, h5 {
     font-weight: 500;
+    color: #2f3542;
   }
 
   button {

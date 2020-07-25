@@ -7,8 +7,8 @@ import GlobalStyle from './styles/global';
 function App() {
   return (
     <BrowserRouter>
-      <Routes />
       <GlobalStyle />
+      <Routes />
     </BrowserRouter>
   );
 }
