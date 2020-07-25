@@ -9,6 +9,7 @@ export const Container = styled.button<ContainerProps>`
   padding: 10px 25px;
   border-radius: 4px;
   background-color: #6256ef;
+  min-width: 150px;
 
   text-transform: uppercase;
   color: #fff;
@@ -23,5 +24,9 @@ export const Container = styled.button<ContainerProps>`
       background-color: transparent;
       border: 1px solid #6256ef;
       color: #6256ef;
+
+      &:hover {
+        opacity: 0.8;
+      }
     `}
 `;
