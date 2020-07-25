@@ -1,9 +1,14 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import Button from '../components/Button';
 
 const Home: React.FC = () => {
-  return <h1>uLift</h1>;
+  return (
+    <>
+      <h1>uLift</h1>
+      <Button>Entrar</Button>
+    </>
+  );
 };
 
 export default Home;
